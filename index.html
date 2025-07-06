@@ -6,18 +6,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Urdu to Devanagari Transcription</h1>
-    
-    <textarea id="urduInput" placeholder="اردو میں کچھ लिखें..." rows="6"></textarea>
-    <button onclick="transcribe()">Transcribe</button>
-    
-    <h2>Devanagari Output</h2>
-    <div id="devnagriOutput" class="output"></div>
-    
-    <h3>Difficult Word Meanings</h3>
-    <div id="wordMeanings" class="meanings"></div>
-  </div>
+  <h1>Urdu to Devanagari Transcription</h1>
+
+  <textarea id="urduText" rows="15" cols="100" placeholder="Paste Urdu text or upload a file..."></textarea>
+  <br><br>
+
+  <input type="file" id="fileInput" accept=".txt,.pdf" />
+  <button onclick="handleFile()">Load File</button>
+  <button onclick="transcribeText()">Transcribe</button>
+
+  <h2>Devanagari Transcription:</h2>
+  <div id="devnagriOutput" class="output"></div>
+
+  <h2>Difficult Words & Izafat Meanings:</h2>
+  <div id="meaningsOutput" class="output"></div>
 
   <script src="script.js"></script>
 </body>

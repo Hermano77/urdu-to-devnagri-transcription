@@ -3,23 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>Urdu to Devanagari Transcription</title>
-  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    #output {
+      white-space: pre-wrap;
+      margin-top: 20px;
+    }
+    .loader {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Urdu to Devanagari Transcription</h1>
+  <h1>📄 Urdu to Devanagari Transcription</h1>
+  
+  <input type="file" id="fileInput" accept="image/*,.pdf" />
+  <button onclick="handleFile()">Transcribe</button>
+  
+  <div class="loader" id="loader">Processing OCR... Please wait.</div>
+  
+  <h3>🔤 Transcribed Text (Devanagari):</h3>
+  <div id="output"></div>
 
-  <textarea id="urduText" rows="15" cols="100" placeholder="Paste Urdu text or upload a file..."></textarea>
-  <br><br>
-
-  <input type="file" id="fileInput" accept=".txt,.pdf" />
-  <button onclick="handleFile()">Load File</button>
-  <button onclick="transcribeText()">Transcribe</button>
-
-  <h2>Devanagari Transcription:</h2>
-  <div id="devnagriOutput" class="output"></div>
-
-  <h2>Difficult Words & Izafat Meanings:</h2>
-  <div id="meaningsOutput" class="output"></div>
+  <h3>📘 Difficult Words & Izafat:</h3>
+  <div id="meaningOutput"></div>
 
   <script src="script.js"></script>
 </body>

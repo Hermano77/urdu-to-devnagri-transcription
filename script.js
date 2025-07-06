@@ -1,7 +1,9 @@
+// script.js
+
+// Handles file upload and runs OCR + transliteration
 async function handleFile() {
   const input = document.getElementById('fileInput');
   const output = document.getElementById('output');
-  const meaningOutput = document.getElementById('meaningOutput');
   const loader = document.getElementById('loader');
 
   if (!input.files.length) {
@@ -13,7 +15,6 @@ async function handleFile() {
 
   loader.style.display = 'block';
   output.textContent = '';
-  meaningOutput.textContent = '';
 
   const imageUrl = URL.createObjectURL(file);
 
@@ -27,14 +28,9 @@ async function handleFile() {
     );
 
     const urduText = result.data.text;
+    const devanagariText = await transliterateAPI(urduText);
 
-    // Simulate API call to convert to Devanagari and fetch meanings
-    const devanagariText = await fakeTransliterateAPI(urduText);
     output.textContent = devanagariText;
-
-    const meanings = await fakeGetMeaningsAPI(urduText);
-    meaningOutput.innerHTML = meanings.map(m => `<p>${m.word}: ${m.meaning}</p>`).join("");
-
   } catch (err) {
     output.textContent = "Error processing file: " + err.message;
   } finally {
@@ -42,17 +38,24 @@ async function handleFile() {
   }
 }
 
-// Simulated Transliteration API
-async function fakeTransliterateAPI(text) {
-  // Replace this with actual API call to backend
-  return "देवनागरी ट्रांसक्रिप्शन: " + text.slice(0, 200) + "...";
-}
+// Sends text to Devnagri API
+async function transliterateAPI(urduText) {
+  const response = await fetch(
+    "https://api.devnagri.com/v1/transliterate",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer devnagri_637413045a2411f0be8642010aa00fc7"
+      },
+      body: JSON.stringify({
+        text: urduText,
+        source_lang: "ur",
+        target_lang: "hi"
+      })
+    }
+  );
 
-// Simulated Dictionary API
-async function fakeGetMeaningsAPI(text) {
-  // You can extract rare words and send them to a dictionary API
-  return [
-    { word: "محبت", meaning: "Love" },
-    { word: "زندگی", meaning: "Life" }
-  ];
+  const data = await response.json();
+  return data.transliteration || "No transliteration returned.";
 }
